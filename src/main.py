@@ -2,6 +2,7 @@ import os
 import time
 import argparse
 import networkx as nx
+from Approx import Approx
 
 parser = argparse.ArgumentParser(description='Find Minimum Vertex Cover (MVC)')
 parser.add_argument('-inst', help='Graph Instance')
@@ -10,13 +11,14 @@ parser.add_argument('-time', help='Cutoff Time (in secs)')
 parser.add_argument('-seed', help='Random Seed')
 args = parser.parse_args()
 
-def create_graph(cur_path, file_name):
-    # data_path = cur_path + "\\data\\" + file_name
+# Add the corresponding path for accessing the graph data files
+data_path = 'C:\\Users\\Saiprasad\\Desktop\\Fall2022\\CSEA\\MVC\\data\\'
+output_path= 'C:\\Users\\Saiprasad\\Desktop\\Fall2022\\CSEA\\MVC\\output\\'
 
-    # Add the corresponding path for accessing the graph data files
-    data_path = 'C:\\Users\\Saiprasad\\Desktop\\Fall2022\\CSEA\\MVC\\data\\' + file_name
+def create_graph(file_name):
 
-    graph_file = open(data_path, 'r')
+    file_path = data_path + file_name
+    graph_file = open(file_path, 'r')
     graph_data = graph_file.readlines()
     n_vertices, n_edges, is_weighted = graph_data[0].split()
 
@@ -31,8 +33,8 @@ def create_graph(cur_path, file_name):
 
 
 if __name__=="__main__":
-    cur_path = os.getcwd()
-    G = create_graph(cur_path, args.inst)
+
+    G = create_graph(args.inst)
     # print(G.edges(), G.nodes())
 
     if(args.alg == "BnB"):
@@ -41,7 +43,7 @@ if __name__=="__main__":
 
     elif(args.alg == "Approx"):
         # Function call to the Approx Function
-        pass
+        sol, trace = Approx(G)
 
     elif(args.alg == "LS1"):
         # Function call to the LS1 Function
@@ -55,3 +57,19 @@ if __name__=="__main__":
         print('-- Algo type missing --')
         exit()
 
+
+    # Creating the solution and trace files for storing the data
+    if(args.alg == "Approx" or args.alg=="BnB"):
+        sol_file = output_path + args.inst[0:-6] + '_' + args.alg + '_' + args.time + '.sol'
+        trace_file = output_path + args.inst[0:-6] + '_' + args.alg + '_' + args.time + '.trace'
+    else:
+        sol_file = output_path + args.inst[0:-6] + '_' + args.alg + '_' + args.time + '_' + args.seed + '.sol'
+        trace_file = output_path + args.inst[0:-6] + '_' + args.alg + '_' + args.time + '_' + args.seed + '.trace'   
+
+    f = open(sol_file, 'w')
+    f.write(sol)
+    f.close()
+
+    f = open(trace_file, 'w')
+    f.write(trace)
+    f.close()
