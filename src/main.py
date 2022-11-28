@@ -13,8 +13,8 @@ parser.add_argument('-seed', help='Random Seed')
 args = parser.parse_args()
 
 # Add the corresponding path for accessing the graph data files
-data_path = 'C:\\Users\\Saiprasad\\Desktop\\Fall2022\\CSEA\\MVC\\data\\'
-output_path= 'C:\\Users\\Saiprasad\\Desktop\\Fall2022\\CSEA\\MVC\\output\\'
+data_path = '/Users/pranoy/Dropbox (GaTech)/Research/Classes/CSE6140-ALGO/Project/DATA/'
+output_path= '/Users/pranoy/Dropbox (GaTech)/Research/Classes/CSE6140-ALGO/Project/output/'
 
 def create_graph(file_name,VE=False):
 
@@ -31,10 +31,9 @@ def create_graph(file_name,VE=False):
             for v in neighbour:
                 G.add_edge(int(i), int(v))
                 
-    with open(file_name, 'r') as vertices:
-	V, E, Temp = vertices.readline().split()
-    return G, int(V), int(E)
-
+    with open(file_path, 'r') as vertices:
+        V, E, Temp = vertices.readline().split()
+        return G, int(V), int(E)
 
 if __name__=="__main__":
 
@@ -58,9 +57,9 @@ if __name__=="__main__":
 
     elif(args.alg == "LS2"):
         # Function call to the LS2 Function
-	sol, trace = Hill(G,V,E,randSeed,cutoff)
-        pass
-    
+        sol, trace = Hill(G,V,E,randSeed,cutoff)
+        #pass
+
     else:
         print('-- Algo type missing --')
         exit()
