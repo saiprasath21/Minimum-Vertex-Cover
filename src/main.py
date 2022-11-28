@@ -2,7 +2,10 @@ import os
 import time
 import argparse
 import networkx as nx
+import sys
+import heapq
 from Approx import Approx
+from ls1 import LS1_SA
 from ls2 import Hill
 
 parser = argparse.ArgumentParser(description='Find Minimum Vertex Cover (MVC)')
@@ -33,11 +36,11 @@ def create_graph(file_name,VE=False):
                 
     with open(file_path, 'r') as vertices:
         V, E, Temp = vertices.readline().split()
-        return G, int(V), int(E)
+        return G, int(V), int(E), n_edges
 
 if __name__=="__main__":
 
-    G, V, E = create_graph(args.inst)
+    G, V, E, num_edge = create_graph(args.inst)
     graph_file = args.inst
     cutoff = args.time
     randSeed = args.seed
@@ -52,9 +55,9 @@ if __name__=="__main__":
         sol, trace = Approx(G)
 
     elif(args.alg == "LS1"):
-        # Function call to the LS1 Function
-        pass
-
+        # Function call to the LS1 Function - Simulated Annealing
+        sol, trace = LS1_SA(G, V, num_edge, cutoff, randSeed)
+        
     elif(args.alg == "LS2"):
         # Function call to the LS2 Function
         sol, trace = Hill(G,V,E,randSeed,float(cutoff))
