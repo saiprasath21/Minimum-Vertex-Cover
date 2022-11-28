@@ -30,9 +30,9 @@ def create_graph(file_name,VE=False):
             for v in neighbour:
                 G.add_edge(int(i), int(v))
                 
-    with open(file_name, 'r') as vertices:
-			V, E, Temp = vertices.readline().split()
     if VE:
+	with open(file_name, 'r') as vertices:
+		V, E, Temp = vertices.readline().split()
         return G, int(V), int(E)
     else:
         return G
