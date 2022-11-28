@@ -3,6 +3,7 @@ import time
 import argparse
 import networkx as nx
 from Approx import Approx
+from ls2 import Hill
 
 parser = argparse.ArgumentParser(description='Find Minimum Vertex Cover (MVC)')
 parser.add_argument('-inst', help='Graph Instance')
@@ -30,17 +31,14 @@ def create_graph(file_name,VE=False):
             for v in neighbour:
                 G.add_edge(int(i), int(v))
                 
-    if VE:
-	with open(file_name, 'r') as vertices:
-		V, E, Temp = vertices.readline().split()
-        return G, int(V), int(E)
-    else:
-        return G
+    with open(file_name, 'r') as vertices:
+	V, E, Temp = vertices.readline().split()
+    return G, int(V), int(E)
 
 
 if __name__=="__main__":
 
-    G = create_graph(args.inst)
+    G, V, E = create_graph(args.inst)
     # print(G.edges(), G.nodes())
 
     if(args.alg == "BnB"):
@@ -57,6 +55,7 @@ if __name__=="__main__":
 
     elif(args.alg == "LS2"):
         # Function call to the LS2 Function
+	# sol, trace = Hill(G,V,E)
         pass
     
     else:
