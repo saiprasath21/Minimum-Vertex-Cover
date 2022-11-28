@@ -15,7 +15,7 @@ args = parser.parse_args()
 data_path = 'C:\\Users\\Saiprasad\\Desktop\\Fall2022\\CSEA\\MVC\\data\\'
 output_path= 'C:\\Users\\Saiprasad\\Desktop\\Fall2022\\CSEA\\MVC\\output\\'
 
-def create_graph(file_name):
+def create_graph(file_name,VE=False):
 
     file_path = data_path + file_name
     graph_file = open(file_path, 'r')
@@ -29,7 +29,13 @@ def create_graph(file_name):
             neighbour = neighbours.split()
             for v in neighbour:
                 G.add_edge(int(i), int(v))
-    return G
+                
+    with open(file_name, 'r') as vertices:
+			V, E, Temp = vertices.readline().split()
+    if VE:
+        return G, int(V), int(E)
+    else:
+        return G
 
 
 if __name__=="__main__":
