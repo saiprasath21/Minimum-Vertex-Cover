@@ -39,6 +39,9 @@ def create_graph(file_name,VE=False):
 if __name__=="__main__":
 
     G, V, E = create_graph(args.inst)
+    graph_file = args.inst
+    cutoff = args.time
+    randSeed = args.seed
     # print(G.edges(), G.nodes())
 
     if(args.alg == "BnB"):
@@ -55,7 +58,7 @@ if __name__=="__main__":
 
     elif(args.alg == "LS2"):
         # Function call to the LS2 Function
-	# sol, trace = Hill(G,V,E)
+	sol, trace = Hill(G,V,E,randSeed,cutoff)
         pass
     
     else:
@@ -65,11 +68,11 @@ if __name__=="__main__":
 
     # Creating the solution and trace files for storing the data
     if(args.alg == "Approx" or args.alg=="BnB"):
-        sol_file = output_path + args.inst[0:-6] + '_' + args.alg + '_' + args.time + '.sol'
-        trace_file = output_path + args.inst[0:-6] + '_' + args.alg + '_' + args.time + '.trace'
+        sol_file = output_path + graph_file[0:-6] + '_' + args.alg + '_' + cutoff + '.sol'
+        trace_file = output_path + graph_file[0:-6] + '_' + args.alg + '_' + cutoff + '.trace'
     else:
-        sol_file = output_path + args.inst[0:-6] + '_' + args.alg + '_' + args.time + '_' + args.seed + '.sol'
-        trace_file = output_path + args.inst[0:-6] + '_' + args.alg + '_' + args.time + '_' + args.seed + '.trace'   
+        sol_file = output_path + graph_file[0:-6] + '_' + args.alg + '_' + cutoff + '_' + randSeed + '.sol'
+        trace_file = output_path + graph_file[0:-6] + '_' + args.alg + '_' + cutoff + '_' + randSeed + '.trace'   
 
     f = open(sol_file, 'w')
     f.write(sol)
