@@ -48,7 +48,8 @@ if __name__=="__main__":
 
     if(args.alg == "BnB"):
         # Function call to the BnB Function
-        pass
+#         pass
+        sol, trace = bnb(graph_file, cutoff)
 
     elif(args.alg == "Approx"):
         # Function call to the Approx Function
