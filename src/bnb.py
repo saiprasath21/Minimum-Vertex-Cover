@@ -19,32 +19,31 @@ import networkx as nx
 #python bnb2.py -inst DATA/football.graph -alg BnB -time 600 -seed 100 
 #python bnb2.py -inst DATA/delaunay_n10.graph -alg BnB -time 600 -seed 100 
 #python bnb2.py -inst DATA/as-22july06.graph -alg BnB -time 600 -seed 100 
-def parse_file(filename):
-    adjacency_list=[]
-    new_graph=nx.Graph()
-    with open(filename) as file1:
-        first_row=file1.readline().split()
-        # print(first_row)
-        vertex_count=int(first_row[0])
-        for i in range(vertex_count):
-            each_line=file1.readline().split()
-            # each_line=[int(x) for x in each_line]
-            each_line=list(map(int, each_line))
-            for elem in each_line:
-                new_graph.add_edge(i+1, elem)
-            # print(list(each_line))
-            adjacency_list.append(each_line)
-    return new_graph #, adjacency_list
+
+# def parse_file(filename):
+#     adjacency_list=[]
+#     new_graph=nx.Graph()
+#     with open(filename) as file1:
+#         first_row=file1.readline().split()
+#         # print(first_row)
+#         vertex_count=int(first_row[0])
+#         for i in range(vertex_count):
+#             each_line=file1.readline().split()
+#             # each_line=[int(x) for x in each_line]
+#             each_line=list(map(int, each_line))
+#             for elem in each_line:
+#                 new_graph.add_edge(i+1, elem)
+#             # print(list(each_line))
+#             adjacency_list.append(each_line)
+#     return new_graph #, adjacency_list
 
 # def get_node_max_degree(curr_graph):
 #     list_of_degrees=curr_graph.degree()
 
-def bnb(filename, timeLimit):
+def BNB(bnbGraph, timeLimit):
     startTime = time()
     timeTaken = 0 
     times = []
-    bnbGraph=parse_file(filename)
-    brrr = bnbGraph.copy()
     currGraph:nx.Graph=bnbGraph.copy() #maintain a copy that can be modified / replaced...
     #find node with maximum degree... use separate function..?
     #####...max degree...####
@@ -150,41 +149,3 @@ def bnb(filename, timeLimit):
                 
     return optimalVC, times
 
-def main(inputFilename, output_dir, cutoff, randseed, algorithm):
-    optimalVC, times = bnb(inputFilename, cutoff)
-    print(optimalVC)
-    for ele in optimalVC:
-        if not ele[1]:
-            optimalVC.remove(ele)
-    print(optimalVC)
-
-    # outfileHeader = inputFilename.split(".")[0]
-    outfileHeader = inputFilename.split(".")[0].split("/")[-1]
-
-    #sol files
-    with open(f"./{output_dir}/{outfileHeader}_{algorithm}_{cutoff}.sol", 'w') as f:
-        f.write(str(len(optimalVC))+"\n")
-        f.write(",".join([str(x[0]) for x in optimalVC]))
-    
-    #trace files
-    with open(f"./{output_dir}/{outfileHeader}_{algorithm}_{cutoff}.trace", 'w') as f:
-        for i in times:
-            f.write('%.2f,%i\n' % ((i[1]),i[0]))
-
-# _, adj_list=parse_file("dummy1.graph")
-# print(adj_list)
-if __name__=="__main__":
-    parser=argparse.ArgumentParser(description='Input parser for BnB')
-    parser.add_argument('-inst',action='store',type=str,required=True,help='Inputgraph datafile')
-    parser.add_argument('-algo',action='store',default=1000,type=str,required=True,help='Name of algorithm')
-    parser.add_argument('-time',action='store',default=1000,type=int,required=True,help='Cutoff running time for algorithm')
-    parser.add_argument('-seed',action='store',default=1000,type=int,required=False,help='random seed')
-    args=parser.parse_args()
-
-    algorithm = args.algo
-    graph_file = args.inst
-    output_dir = 'Output/'
-    cutoff = args.time
-    randSeed = args.seed
-
-    main(graph_file,output_dir,cutoff,randSeed,algorithm)
