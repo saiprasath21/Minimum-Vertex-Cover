@@ -7,7 +7,7 @@ import heapq
 from Approx import Approx
 from ls1 import LS1_SA
 from ls2 import Hill
-from bnb import bnb
+from bnb import BNB
 
 parser = argparse.ArgumentParser(description='Find Minimum Vertex Cover (MVC)')
 parser.add_argument('-inst', help='Graph Instance')
@@ -50,7 +50,7 @@ if __name__=="__main__":
     if(args.alg == "BnB"):
         # Function call to the BnB Function
 #         pass
-        sol, trace = bnb(graph_file, cutoff)
+        sol, trace = BNB(G, cutoff)
 
     elif(args.alg == "Approx"):
         # Function call to the Approx Function
