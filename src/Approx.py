@@ -2,7 +2,7 @@ import time
 import networkx as nx
 import numpy as np
 
-def Approx(G_):
+def Approx(G_,retVC=False):
     G = G_.copy()
     
     vertex_cover = []
@@ -50,6 +50,9 @@ def Approx(G_):
     vertex_cover.sort()
     sol += str(len(vertex_cover)) + '\n' + ','.join([str(v) for v in vertex_cover])
     trace += str(total_time) + ', ' + str(len(vertex_cover))
-    return sol, trace
+    if retVC:
+        return sol, trace, vertex_cover
+    else:
+        return sol, trace
     # print(len(vertex_cover))
     # print(vertex_cover)

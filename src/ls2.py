@@ -2,24 +2,25 @@ import time
 import random
 import networkx as nx
 import numpy as np
+from Approx import Approx
 
 
 def init(G, start_time, cutoff, trace_output):
-		temp_G = G.nodes()
-		VC = sorted(list(zip(list(dict(G.degree(temp_G)).values()), temp_G)))
-		VC_sol = temp_G
-		i=0
-		uncovE=[]
-		optvc_len = len(VC_sol)
-		while(i < len(VC) and (time.time() - start_time) < cutoff):
-			flag=True
-			for x in G.neighbors(VC[i][1]):
-				if x not in temp_G:
-					flag = False
-			if flag:	
-				list(temp_G).remove(VC[i][1])
-			i=i+1
-		return VC_sol, trace_output	
+    temp_G = G.nodes()
+    VC = sorted(list(zip(list(dict(G.degree(temp_G)).values()), temp_G)))
+    VC_sol = temp_G
+    i=0
+    uncovE=[]
+    optvc_len = len(VC_sol)
+    while(i < len(VC) and (time.time() - start_time) < cutoff):
+        flag=True
+        for x in G.neighbors(VC[i][1]):
+            if x not in temp_G:
+                flag = False
+        if flag:	
+            list(temp_G).remove(VC[i][1])
+        i=i+1
+    return VC_sol, trace_output	
 
 # Helper method to add a vertex
 def addV(G, VC, conf_check, dscores, edge_weights, uncovE, add):
@@ -46,14 +47,34 @@ def removeV(G, VC, conf_check, dscores, edge_weights, uncovE, removed):
         else:
             dscores[x] -= edge_weights[removed][x]
 
+# Helper method to verify a vertex cover
+def check(Gx, VC):
+    print("Initial: ", np.shape(Gx.edges()))
+    for v in VC:
+        Gx.remove_node(v)
+    print("Final: ", np.shape(Gx.edges()))
+    print("Final: ", Gx.edges())
+    #C=0
+    #for u in list(G.nodes()):
+    #    if u in VC:
+    #        C=C+1
+ 
+    #print("No. of Nodes covered in Input graph: ",C)
+    #print("No. of Nodes covered in Output graph: ",len(VC))
+    #if C==len(VC):
+    #    print("This is a valid Vertex Cover")
+
 #Hill CLimb Implementation
 def Hill(G, V, E, randSeed,cutoff):
     # Initialization
-    trace_output=[]
+    
 
     start_time = time.time()
 
-    vertex_cover, trace_output = init(G, start_time, cutoff, trace_output)
+    vertex_coverx, trace_output, vertex_cover = Approx(G,True)#init(G, start_time, cutoff, trace_output)
+    
+    trace_output=[]
+
 
     sol = ""
     trace = ""
@@ -74,6 +95,7 @@ def Hill(G, V, E, randSeed,cutoff):
     optvc_len = len(VC)
     avg_weight = 0
     delta_weight = 0
+    Gi=G.copy()
 
     #andHereWeGoAgain
 
@@ -158,4 +180,9 @@ def Hill(G, V, E, randSeed,cutoff):
     vertex_cover.sort()
     sol += str(len(vertex_cover)) + '\n' + ','.join([str(v) for v in vertex_cover])
     trace += str(total_time) + ', ' + str(len(vertex_cover))
+
+    G_=G
+
+    check(G_,VC.copy())
+
     return sol, trace
