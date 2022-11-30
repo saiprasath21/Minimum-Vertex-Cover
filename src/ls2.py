@@ -49,20 +49,14 @@ def removeV(G, VC, conf_check, dscores, edge_weights, uncovE, removed):
 
 # Helper method to verify a vertex cover
 def check(Gx, VC):
-    print("Initial: ", np.shape(Gx.edges()))
+    #print("Initial: ", np.shape(Gx.edges()))
     for v in VC:
         Gx.remove_node(v)
-    print("Final: ", np.shape(Gx.edges()))
-    print("Final: ", Gx.edges())
-    #C=0
-    #for u in list(G.nodes()):
-    #    if u in VC:
-    #        C=C+1
- 
-    #print("No. of Nodes covered in Input graph: ",C)
-    #print("No. of Nodes covered in Output graph: ",len(VC))
-    #if C==len(VC):
-    #    print("This is a valid Vertex Cover")
+    if len(Gx.edges())>0:
+        print("Checked: Graph is not a Vertex Cover")
+    else:
+        print("Checked: Graph is a Vertex Cover (VC)")
+    #print("Final: ", np.shape(Gx.edges()))
 
 #Hill CLimb Implementation
 def Hill(G, V, E, randSeed,cutoff):
@@ -176,13 +170,13 @@ def Hill(G, V, E, randSeed,cutoff):
     total_time = time.time() - start_time
 
     # Creating the solution and trace files
-    vertex_cover=list(VC.copy())
+    vertex_cover=list(VC_sol.copy())
     vertex_cover.sort()
     sol += str(len(vertex_cover)) + '\n' + ','.join([str(v) for v in vertex_cover])
     trace += str(total_time) + ', ' + str(len(vertex_cover))
 
     G_=G
 
-    check(G_,VC.copy())
+    check(G_,VC_sol.copy())
 
     return sol, trace
