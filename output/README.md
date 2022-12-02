@@ -13,7 +13,7 @@
 * delaunay n10
 * power
 
-## Algorithms and Paramters:
+## Algorithms and Parameters:
 * **Branch and Bound:** Cutoff - 600 seconds
 * **Approximation Algorithm:** Cutoff - 600 seconds
 * **Local Search 1 - Simulated Annealing:** Cutoff - {20, 40, 60, 80, 100} seconds, Number of RandomSeeds - 5
