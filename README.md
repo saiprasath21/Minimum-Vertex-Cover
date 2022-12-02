@@ -17,3 +17,14 @@ For running the codes, you will need to install the following libraries:
 * time
 * random
 * numpy
+
+## Executing the files:
+
+Run specific files and input parameters:
+```
+$ main.py -inst <filename> -alg [BnB|Approx|LS1|LS2] -time <cutoff in seconds> -seed <random seed>
+```
+Run all the files using the bash file:
+```
+$ bash run_files.sh
+```
