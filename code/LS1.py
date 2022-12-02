@@ -1,13 +1,17 @@
+
+# This code is used to perform local search - simulated annealing method
+
 import time
 import random
 import math
+import numpy 
 
 def LS1_SA(graph, vertices, num_edge, cutoff_time, seed):
     # Simulated annealing
     random.seed(seed)
 
     start_time = time.time()
-    alpha = 0.99  # temp decrease rate
+    alpha = 0.95  # temp decrease rate
     T0 = 200  # initial temp
     T = T0
     threshold = 1  # define significant improvement
