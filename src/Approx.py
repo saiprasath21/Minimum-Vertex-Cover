@@ -2,46 +2,58 @@ import time
 import networkx as nx
 import numpy as np
 
+# Reference Paper: Delbot, François, and Christian Laforest. "Analytical and experimental comparison of six algorithms for the vertex cover problem." Journal of Experimental Algorithmics (JEA) 15 (2010): 1-1.
+
 def Approx(G_,retVC=False):
-    G = G_.copy()
+   
+    G = G_.copy() # Make a copy of the graph for modifying
     
     vertex_cover = []
     sol = ""
     trace = ""
     start = time.time()
+    
+# -----------------------------------------------------------------------------
 
-    # Algo 4 - Edge Deletion
-    # while G.number_of_edges() > 0:
-    #     (u,v) = list(G.edges())[0]
-        
-    #     vertex_cover.append(u)
-    #     vertex_cover.append(v)
+#     Algo 4 - Edge Deletion
 
-    #     G.remove_node(u)
-    #     G.remove_node(v)
-
-        # print(G.number_of_edges(), G.number_of_nodes(), G.nodes())
-
-    # Algo 1 - Maximum Degree Greedy (MDG)
     while G.number_of_edges() > 0:
-        node_degree = [x[1] for x in G.degree]
-        max_degree_node = list(G.degree)[np.argmax(node_degree)][0]
+        (u,v) = list(G.edges())[0]
+        
+        vertex_cover.append(u)
+        vertex_cover.append(v)
 
-        vertex_cover.append(max_degree_node)
-        G.remove_node(max_degree_node)
+        G.remove_node(u)
+        G.remove_node(v)
 
-    # Algo 2 - Greedy Independent Cover
-    # while G.number_of_edges() > 0:
-    #     node_degree = [x[1] for x in G.degree]
-    #     min_degree_node = list(G.degree)[np.argmin(node_degree)][0]    
+#       print(G.number_of_edges(), G.number_of_nodes(), G.nodes())
 
-    #     min_degree_node_neighbors = G.neighbors(min_degree_node)
-    #     # print(G.degree, min_degree_node, min_degree_node_neighbors)
-    #     G.remove_node(min_degree_node)
+# -----------------------------------------------------------------------------
 
-    #     for v in min_degree_node_neighbors:
-    #         vertex_cover.append(v)
-    #         G.remove_node(v)
+#     Algo 1 - Maximum Degree Greedy (MDG)
+    
+#     while G.number_of_edges() > 0:
+#         node_degree = [x[1] for x in G.degree]
+#         max_degree_node = list(G.degree)[np.argmax(node_degree)][0]
+
+#         vertex_cover.append(max_degree_node)
+#         G.remove_node(max_degree_node)
+
+# -----------------------------------------------------------------------------
+
+#     Algo 2 - Greedy Independent Cover
+
+#     while G.number_of_edges() > 0:
+#         node_degree = [x[1] for x in G.degree]
+#         min_degree_node = list(G.degree)[np.argmin(node_degree)][0]    
+
+#         min_degree_node_neighbors = G.neighbors(min_degree_node)
+#         # print(G.degree, min_degree_node, min_degree_node_neighbors)
+#         G.remove_node(min_degree_node)
+
+#         for v in min_degree_node_neighbors:
+#             vertex_cover.append(v)
+#             G.remove_node(v)
     
     total_time = time.time() - start
 
