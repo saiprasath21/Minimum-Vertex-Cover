@@ -1,67 +1,33 @@
-import argparse
-import os
 from time import time
 import networkx as nx
+import numpy as np
 
-
-#python bnb2.py -inst DATA/email.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/dummy1.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/dummy2.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/jazz.graph -alg BnB -time 600 -seed 100 
-
-#python bnb2.py -inst DATA/power.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/star.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/star2.graph -alg BnB -time 600 -seed 100 
-
-#python bnb2.py -inst DATA/netscience.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/karate.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/hep-th.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/football.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/delaunay_n10.graph -alg BnB -time 600 -seed 100 
-#python bnb2.py -inst DATA/as-22july06.graph -alg BnB -time 600 -seed 100 
-
-# def parse_file(filename):
-#     adjacency_list=[]
-#     new_graph=nx.Graph()
-#     with open(filename) as file1:
-#         first_row=file1.readline().split()
-#         # print(first_row)
-#         vertex_count=int(first_row[0])
-#         for i in range(vertex_count):
-#             each_line=file1.readline().split()
-#             # each_line=[int(x) for x in each_line]
-#             each_line=list(map(int, each_line))
-#             for elem in each_line:
-#                 new_graph.add_edge(i+1, elem)
-#             # print(list(each_line))
-#             adjacency_list.append(each_line)
-#     return new_graph #, adjacency_list
-
-# def get_node_max_degree(curr_graph):
-#     list_of_degrees=curr_graph.degree()
-
-def BNB(bnbGraph, timeLimit):
+def bnb(filename, timeLimit):
     startTime = time()
     timeTaken = 0 
     times = []
+    allVC = []
+    bnbGraph=parse_file(filename)
+    brrr = bnbGraph.copy()
     currGraph:nx.Graph=bnbGraph.copy() #maintain a copy that can be modified / replaced...
     #find node with maximum degree... use separate function..?
     #####...max degree...####
     # print(dict(currGraph.degree()))
     list_of_degrees=sorted(dict(currGraph.degree()).items(), reverse=True, key=lambda item: item[1])
     max_node, maxDegree=list_of_degrees[0] #this is a tuple...(node, degree)
-    optimalVC=[]
+    optimalVC=np.array([])
     currVC=[]
     frontier=[]
+    # neighbours=[]
     upperBound=currGraph.number_of_nodes()
-    print('upperbound (initial):', upperBound)
+    print('Initial UpperBound:', upperBound)
     #lower bound calc later..
     frontier.append([max_node, False, -1, None]) #1st parent's val: -1, -1..? #0: False... 1: True...
     frontier.append([max_node, True, -1, None])
     #2 different possibilities added to frontier...
     while len(frontier)!=0 and timeTaken < timeLimit:
         poppedVertex, considered, parent_node, parent_node_considered=frontier.pop()
-        
+        #backtrack flag..? instead just call backtracking func..?
         if considered:
             currGraph.remove_node(poppedVertex)
         else:
@@ -77,10 +43,11 @@ def BNB(bnbGraph, timeLimit):
 
         if currGraph.number_of_edges()==0:
             if count<upperBound:
-                optimalVC=currVC.copy()
+                optimalVC=np.array(currVC.copy())
                 upperBound=count
-                print('size of current VC (optimal)', count)
+                print('Current Opt VC size', count)
                 times.append((count, time()-startTime))
+                allVC.append(list(optimalVC[:,0]))
             #backtracking...
             if len(frontier)!=0:
                 if [frontier[-1][2], frontier[-1][3]] in currVC: #change made: tuple to list..
@@ -106,7 +73,7 @@ def BNB(bnbGraph, timeLimit):
                     currGraph=bnbGraph.copy()
 
                 else:
-                    print("Error...")
+                    print("Puta")
             
         else:
             #find lower bound then add count to it...
@@ -142,10 +109,10 @@ def BNB(bnbGraph, timeLimit):
                         currGraph=bnbGraph.copy()
 
                     else:
-                        print("Error2...")
+                        print("Puta")
         timeTaken = time()-startTime
         if timeTaken > timeLimit:
             print("Time limit reached")
                 
-    return optimalVC, times
+    return list(optimalVC[:,0]), (allVC,times)
 
