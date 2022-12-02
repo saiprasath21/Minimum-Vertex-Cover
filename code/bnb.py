@@ -51,7 +51,7 @@ def BNB(bnbGraph, timeLimit):
                 optimalVC=np.array(removeFalse(currVC.copy()))
                 upperBound=count
                 print('Current Opt VC size', count)
-                times.append((count, time()-startTime))
+                times.append((time()-startTime, count))
                 allVC.append(list(optimalVC[:,0]))
             #backtracking...
             if len(frontier)!=0:
@@ -119,6 +119,10 @@ def BNB(bnbGraph, timeLimit):
         timeTaken = time()-startTime
         if timeTaken > timeLimit:
             print("Time limit reached")
-                
-    return list(optimalVC[:,0]), (allVC,times)
+    sol = ""
+    sol += str(len(list(optimalVC[:,0]))) + '\n' + ','.join([str(v) for v in list(optimalVC[:,0])])
+    trace = ""
+    for i in range(len(times)):
+        trace += f"{times[i][0]}, {times[i][1]}\n" + ','.join([str(v) for v in list(allVC[i])]) + "\n"
 
+    return sol, trace
