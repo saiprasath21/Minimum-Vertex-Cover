@@ -1,6 +1,18 @@
-This directory contains the source code for the following MVC Algorithms:
-0. Graph Class
-1. B&B
-2. Approx
-3. LS1
-4. LS2
+## This directory contains the following files:
+
+1. main.py
+- inputs parameters from the user and executes the MVC algorithms
+
+2. BnB.py
+- Implements a Branch and Bound approach to compute the MVC
+
+3. Approx.py
+- Implements three different approximation algorithms described in [1]. 
+
+4. LS1
+- Implements a simulated annealing based local search approach. 
+
+5. LS2
+- Implements a first-improvement hill climbing local search approach. 
+
+[1] Delbot, François, and Christian Laforest. "Analytical and experimental comparison of six algorithms for the vertex cover problem." Journal of Experimental Algorithmics (JEA) 15 (2010): 1-1.
