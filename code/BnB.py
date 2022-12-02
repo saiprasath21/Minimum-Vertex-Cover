@@ -2,13 +2,17 @@ from time import time
 import networkx as nx
 import numpy as np
 
-def bnb(filename, timeLimit):
+def removeFalse(optimalVC : list):
+    for ele in optimalVC:
+        if not ele[1]:
+            optimalVC.remove(ele)
+    return optimalVC
+
+def bnb(bnbGraph, timeLimit):
     startTime = time()
     timeTaken = 0 
     times = []
     allVC = []
-    bnbGraph=parse_file(filename)
-    brrr = bnbGraph.copy()
     currGraph:nx.Graph=bnbGraph.copy() #maintain a copy that can be modified / replaced...
     #find node with maximum degree... use separate function..?
     #####...max degree...####
@@ -43,7 +47,7 @@ def bnb(filename, timeLimit):
 
         if currGraph.number_of_edges()==0:
             if count<upperBound:
-                optimalVC=np.array(currVC.copy())
+                optimalVC=np.array(removeFalse(currVC.copy()))
                 upperBound=count
                 print('Current Opt VC size', count)
                 times.append((count, time()-startTime))
@@ -73,7 +77,7 @@ def bnb(filename, timeLimit):
                     currGraph=bnbGraph.copy()
 
                 else:
-                    print("Puta")
+                    print("Error")
             
         else:
             #find lower bound then add count to it...
@@ -109,7 +113,8 @@ def bnb(filename, timeLimit):
                         currGraph=bnbGraph.copy()
 
                     else:
-                        print("Puta")
+                        print("Error")
+                        
         timeTaken = time()-startTime
         if timeTaken > timeLimit:
             print("Time limit reached")
