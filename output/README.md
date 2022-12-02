@@ -1,0 +1,20 @@
+# Solution and Trace Files for all Algorithms
+
+## Graphs Files:
+* jazz
+* karate
+* football
+* as-22july06
+* hep-th
+* star
+* star2
+* netscience
+* email
+* delaunay n10
+* power
+
+## Algorithms and Paramters:
+* **Branch and Bound:** Cutoff - 600 seconds
+* **Approximation Algorithm:** Cutoff - 600 seconds
+* **Local Search 1 - Simulated Annealing:** Cutoff - {20, 40, 60, 80, 100} seconds, Number of RandomSeeds - 5
+* **Local Search 2 - Hill Climbing:** Cutoff - {20, 40, 60, 80, 100} seconds, Number of RandomSeeds - 5
