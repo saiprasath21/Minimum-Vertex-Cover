@@ -1,4 +1,4 @@
-# Repo for the CSE 6140 Group Project - Minimum Vertex Cover
+# CSE 6140 Group Project - Minimum Vertex Cover
 
 ## Dir/Files in the Repo:
 
