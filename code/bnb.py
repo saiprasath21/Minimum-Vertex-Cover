@@ -9,6 +9,7 @@ def removeFalse(optimalVC : list):
     return optimalVC
 
 def bnb(bnbGraph, timeLimit):
+    timeLimit = int(timeLimit)
     startTime = time()
     timeTaken = 0 
     times = []
