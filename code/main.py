@@ -7,7 +7,7 @@ import heapq
 from Approx import Approx
 from LS1 import LS1_SA
 from LS2 import Hill
-from bnb import BNB
+from BnB import BNB
 
 parser = argparse.ArgumentParser(description='Find Minimum Vertex Cover (MVC)')
 parser.add_argument('-inst', help='Graph Instance')
