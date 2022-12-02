@@ -1,6 +1,12 @@
 Repo for the CSE 6140 Group Project on Minimum Vertex Cover. 
 
-Dir in repo:
-1. Data (Graph files)
-2. Code (B&B, Approx, LS1, LS2)
-3. solution and trace files
+Dir/Files in the Repo:
+
+1. code
+- Contains the python codes for the four algorithms: BnB, Approx, LS1 (Simuated Annealing), and LS2 (Hill Climbing)
+
+2. output
+- contains the solution and trace files for the four algorithms across 11 graphs from the 10th DIMACS challenge
+
+3. run_files.sh
+- Bash file to execute the algorithms with different graphs and input parameters
