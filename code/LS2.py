@@ -61,15 +61,15 @@ def check(Gx, VC):
 #Hill CLimb Implementation
 def Hill(G, V, E, randSeed,cutoff):
     # Initialization
-    
 
-    start_time = time.time()
-
+    #Computing Initial Solution
     vertex_coverx, trace_output, vertex_cover = Approx(G,True)#init(G, start_time, cutoff, trace_output)
     
-    trace_output=[]
 
+    #Declaration of variables
+    trace_output=""#[]
 
+    start_time = time.time()
     sol = ""
     trace = ""
 
@@ -98,7 +98,9 @@ def Hill(G, V, E, randSeed,cutoff):
         # If it is a vertex cover: remove the max cost node		
         while not uncovE:
             if (optvc_len > len(VC)):
-                trace_output.append((optvc_len,time.time()-start_time))					
+                total_time = time.time() - start_time
+                trace_output += str(total_time) + ', ' + str(optvc_len)
+                #trace_output.append((optvc_len,time.time()-start_time))					
                 VC_sol = VC.copy()	
                 optvc_len = len(VC)
             max_improv = -float('inf')
@@ -166,17 +168,16 @@ def Hill(G, V, E, randSeed,cutoff):
             avg_weight = new_tot/E
         VC = sorted(set(VC))		
 
-
-    total_time = time.time() - start_time
+        #total_time = time.time() - start_time
+        #trace_output += str(total_time) + ', ' + str(len(vertex_cover))
 
     # Creating the solution and trace files
     vertex_cover=list(VC_sol.copy())
     vertex_cover.sort()
     sol += str(len(vertex_cover)) + '\n' + ','.join([str(v) for v in vertex_cover])
-    trace += str(total_time) + ', ' + str(len(vertex_cover))
 
     G_=G
 
     check(G_,VC_sol.copy())
 
-    return sol, trace
+    return sol, trace_output
