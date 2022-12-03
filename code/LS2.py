@@ -98,11 +98,10 @@ def Hill(G, V, E, randSeed,cutoff):
         # If it is a vertex cover: remove the max cost node		
         while not uncovE:
             if (optvc_len > len(VC)):
-                total_time = time.time() - start_time
-                trace_output += str(total_time) + ', ' + str(optvc_len) + '\n'
-                #trace_output.append((optvc_len,time.time()-start_time))					
+                total_time = time.time() - start_time			
                 VC_sol = VC.copy()	
                 optvc_len = len(VC)
+                trace_output += str(total_time) + ', ' + str(optvc_len) + '\n'	
             max_improv = -float('inf')
             for x in VC:
                 if dscores[x] > max_improv:
@@ -167,9 +166,6 @@ def Hill(G, V, E, randSeed,cutoff):
                         dscores[x[1]] -= edge_weights[x[0]][x[1]]
             avg_weight = new_tot/E
         VC = sorted(set(VC))		
-
-        #total_time = time.time() - start_time
-        #trace_output += str(total_time) + ', ' + str(len(vertex_cover))
 
     # Creating the solution and trace files
     vertex_cover=list(VC_sol.copy())
