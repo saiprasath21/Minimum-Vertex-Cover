@@ -1,3 +1,6 @@
+
+# This code is used to perform local search - simulated annealing method
+
 import time
 import sys
 
