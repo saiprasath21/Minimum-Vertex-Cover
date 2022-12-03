@@ -83,6 +83,7 @@ def LS1_SA(G, cutoff,randSeed):
                 S = S_current.copy()
                 S_best = uncovered_S.copy()
     
+    S_ret.sort()
     sol += str(len(S_ret)) + '\n' + ', '.join([str(v) for v in S_ret])
 
     return sol, trace
