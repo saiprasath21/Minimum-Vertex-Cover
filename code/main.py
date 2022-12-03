@@ -63,7 +63,6 @@ if __name__=="__main__":
     elif(args.alg == "LS2"):
         # Function call to the LS2 Function
         sol, trace = Hill(G,V,E,randSeed,float(cutoff))
-        #pass
 
     else:
         print('-- Algo type missing --')
