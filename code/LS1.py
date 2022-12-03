@@ -10,8 +10,9 @@ import argparse
 import numpy as np
 import networkx as nx
 
-def initial_solution(G, cutoff):
+def initial_solution(G, cutoff,randSeed):
     # create initial solution via removing nodes with more connection (lower bound)
+    random.seed(randSeed)
     start_time = time.time()
     _G = list(G.nodes())
     VC = sorted(list(zip(list(dict(G.degree(_G)).values()), _G)), reverse=False)
@@ -31,7 +32,7 @@ def initial_solution(G, cutoff):
 def LS1_SA(G, cutoff,randSeed):
     T = 0.8 
     random.seed(randSeed)
-    S = initial_solution(G, cutoff) 
+    S = initial_solution(G, cutoff,randSeed) 
     start_time = time.time()    
     S_ret = S.copy()
     S_best = []
@@ -82,6 +83,6 @@ def LS1_SA(G, cutoff,randSeed):
                 S = S_current.copy()
                 S_best = uncovered_S.copy()
     
-    sol += str(len(S_best)) + '\n' + ', '.join([str(v) for v in S_best])
+    sol += str(len(S_ret)) + '\n' + ', '.join([str(v) for v in S_ret])
 
     return sol, trace
