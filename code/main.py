@@ -6,8 +6,8 @@ import sys
 import heapq
 from Approx import Approx
 from LS1 import LS1_SA
-from ls2 import Hill
-from bnb import BNB
+from LS2 import Hill
+from BnB import BNB
 
 parser = argparse.ArgumentParser(description='Find Minimum Vertex Cover (MVC)')
 parser.add_argument('-inst', help='Graph Instance')
@@ -17,8 +17,8 @@ parser.add_argument('-seed', help='Random Seed')
 args = parser.parse_args()
 
 # Add the corresponding path for accessing the graph data files
-data_path = '/Users/pranoy/Dropbox (GaTech)/Research/Classes/CSE6140-ALGO/Project/DATA/'
-output_path= '/Users/pranoy/Dropbox (GaTech)/Research/Classes/CSE6140-ALGO/Project/output/'
+data_path = './DATA/'
+output_path= './output/'
 
 def create_graph(file_name,VE=False):
 

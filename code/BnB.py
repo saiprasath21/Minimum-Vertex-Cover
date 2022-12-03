@@ -13,7 +13,6 @@ def BNB(bnbGraph, timeLimit):
     startTime = time()
     timeTaken = 0 
     times = []
-    allVC = []
     currGraph:nx.Graph=bnbGraph.copy() #maintain a copy that can be modified / replaced...
     #find node with maximum degree... use separate function..?
     #####...max degree...####
@@ -52,7 +51,6 @@ def BNB(bnbGraph, timeLimit):
                 upperBound=count
                 print('Current Opt VC size', count)
                 times.append((time()-startTime, count))
-                allVC.append(list(optimalVC[:,0]))
             #backtracking...
             if len(frontier)!=0:
                 if [frontier[-1][2], frontier[-1][3]] in currVC: #change made: tuple to list..
@@ -123,6 +121,6 @@ def BNB(bnbGraph, timeLimit):
     sol += str(len(list(optimalVC[:,0]))) + '\n' + ','.join([str(v) for v in list(optimalVC[:,0])])
     trace = ""
     for i in range(len(times)):
-        trace += f"{times[i][0]}, {times[i][1]}\n" + ','.join([str(v) for v in list(allVC[i])]) + "\n"
+        trace += f"{times[i][0]}, {times[i][1]}\n"
 
     return sol, trace
