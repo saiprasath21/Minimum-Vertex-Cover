@@ -64,7 +64,7 @@ def Hill(G, V, E, randSeed,cutoff):
 
     #Computing Initial Solution
     vertex_coverx, trace_output, vertex_cover = Approx(G,True)#init(G, start_time, cutoff, trace_output)
-    
+    trace_output += str(0) + ', ' + str(vertex_coverx) + '\n'
 
     #Declaration of variables
     trace_output=""#[]
