@@ -118,7 +118,7 @@ def BNB(bnbGraph, timeLimit):
         if timeTaken > timeLimit:
             print("Time limit reached")
     sol = ""
-    sol += str(len(list(optimalVC[:,0]))) + '\n' + ','.join([str(v) for v in list(optimalVC[:,0])])
+    sol += str(len(list(optimalVC[:,0]))) + '\n' + ','.join([str(v) for v in sorted(list(optimalVC[:,0]))])
     trace = ""
     for i in range(len(times)):
         trace += f"{times[i][0]}, {times[i][1]}\n"
