@@ -58,7 +58,7 @@ if __name__=="__main__":
 
     elif(args.alg == "LS1"):
         # Function call to the LS1 Function - Simulated Annealing
-        sol, trace = LS1_SA(G,V,num_edge, cutoff, randSeed)
+        sol, trace = LS1_SA(G, float(cutoff),randSeed)
         
     elif(args.alg == "LS2"):
         # Function call to the LS2 Function
