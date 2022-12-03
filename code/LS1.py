@@ -1,105 +1,84 @@
-
-# This code is used to perform local search - simulated annealing method
-
 import time
-import random
+import sys
+
 import math
-import numpy 
+import random
+import argparse
+import numpy as np
+import networkx as nx
 
-def LS1_SA(graph, vertices, num_edge, cutoff_time, seed):
-    # Simulated annealing
-    random.seed(seed)
-
+def initial_solution(G, cutoff):
+    # create initial solution via removing nodes with more connection (lower bound)
     start_time = time.time()
-    alpha = 0.95  # temp decrease rate
-    T0 = 200  # initial temp
-    T = T0
-    threshold = 1  # define significant improvement
-    uncovered = set()  # record uncovered edges
-    best_f = len(vertices) # initial score
-    trace = [str(round(time.time() - start_time, 2)) + ' ' + str(best_f)] # trace file content
+    _G = list(G.nodes())
+    VC = sorted(list(zip(list(dict(G.degree(_G)).values()), _G)), reverse=False)
+    i = 0
+    while (i < len(VC) and (time.time() - start_time) < cutoff):
+        check = True
+        for x in G.neighbors(VC[i][1]):
+            if x not in _G:
+                check = False
+        if check:    
+            _G.remove(VC[i][1])            
+        i += 1
+    # fo.write(str(time.time()-start_time) + "," + str(len(_G)) + "\n")
+    # print('Initial Solution:({}) {}'.format(len(_G), _G))
+    return _G
 
-    # all node initialization
-    cover = set()
-    for i in vertices:
-        cover.add(int(i))
+def LS1_SA(G, cutoff,randSeed):
+    T = 0.8 
+    random.seed(randSeed)
+    S = initial_solution(G, cutoff) 
+    start_time = time.time()    
+    S_ret = S.copy()
+    S_best = []
+    sol = ""
+    trace = ""
+    while ((time.time() - start_time) < cutoff):
+        T = 0.95 * T 
 
-    vertices = cover.copy()
-    # initialize objective function score
-    f = objective(cover, uncovered)
-    best_cover = cover.copy()
-    best_f = f
-    best_f2 = f
-
-
-    initial_f = best_f2
-    while (time.time() - start_time) < cutoff_time: # stop when cut-off time is met
-        # Pick a random node to create a neighbor
-        u = random.sample(vertices, 1)
-        u = int(u[0])
-
-        if u in cover: # if u already in the set, then remove it
-            cover.remove(u)
-            for i in graph[u]:
-                i = int(i)
-                if i not in cover:
-                    uncovered.add((u, i))
-                    uncovered.add((i, u))
-        else: # if u not in the set, then add it
-            cover.add(u)
-            for i in graph[u]:
-                i = int(i)
-                if i not in cover:
-                    uncovered.remove((u, i))
-                    uncovered.remove((i, u))
+        # looking for a better solution with less vertice
+        while not S_best:
+            S_ret = S.copy()
+            trace +=(str(time.time()-start_time) + ", " + str(len(S_ret)) + "\n")
+            delete_v = random.choice(S)
+            for v in G.neighbors(delete_v):
+                if v not in S:
+                    S_best.append(v)
+                    S_best.append(delete_v)
+            S.remove(delete_v)     
 
 
-        # Probability computation
-        deg_u = len(graph[u])/num_edge
-        f1 = objective(cover, uncovered)
-        dE = max(0, f1 - f)
-        if u in cover:
-            P = math.exp(-(dE * (1 - deg_u)) / T)
-        else:
-            P = math.exp(-(dE * (1 + deg_u)) / T)
+        # del node
 
-        T = T * alpha # update temperature
-        rand = random.uniform(0, 1)
-        if rand < P:  # admit
-
-            f = f1
-        else: # otherwise return back one step
-            if u in cover:
-                cover.remove(u)
-                for i in graph[u]:
-                    i = int(i)
-                    if i not in cover:
-                        uncovered.add((u, i))
-                        uncovered.add((i, u))
-            else:
-                cover.add(u)
-                for i in graph[u]:
-                    i = int(i)
-                    if i not in cover:
-                        uncovered.remove((u, i))
-                        uncovered.remove((i, u))
-
-        if f < best_f2 and len(uncovered) == 0: # if better and feasible then update results
-            best_f2 = f
-            best_cover2 = cover.copy()
-            if best_f2 < best_f: # if better than best results, then update the best result
-                best_f = best_f2
-                trace.append(str(round(time.time() - start_time, 2)) + ' ' + str(best_f))
-                best_cover = best_cover2.copy()
-            if threshold < (initial_f-best_f2): # no significant improvement then restart
-                initial_f = best_f2
-                T = T0
-
-    return best_cover, trace
+        S_current = S.copy()
+        uncovered_S = S_best.copy()
+        delete_v = random.choice(S)
+        for v in G.neighbors(delete_v):
+            if v not in S:
+                S_best.append(v)
+                S_best.append(delete_v)            
+        S.remove(delete_v)   
 
 
-def objective(cover, uncovered): # objective function
-    a = 1.0
-    b = 2.0
-    f = a*len(cover)+b*len(uncovered)
-    return f
+        # add node
+
+        add_v = random.choice(S_best)
+        S.append(add_v)
+        for v in G.neighbors(add_v):
+            if v not in S:
+                S_best.remove(v)
+                S_best.remove(add_v)
+
+        # accept a new solution based on the probability which is proportional to the 
+        # difference between the quality of the best solution and the current solution, and the temperature. 
+        if len(uncovered_S) < len(S_best): 
+            p = math.exp(float(len(uncovered_S) - len(S_best))/T)
+            alpha = random.uniform(0, 1)
+            if alpha > p:    
+                S = S_current.copy()
+                S_best = uncovered_S.copy()
+    
+    sol += str(len(S_best)) + '\n' + ', '.join([str(v) for v in S_best])
+
+    return sol, trace
