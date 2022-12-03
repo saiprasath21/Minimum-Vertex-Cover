@@ -99,7 +99,7 @@ def Hill(G, V, E, randSeed,cutoff):
         while not uncovE:
             if (optvc_len > len(VC)):
                 total_time = time.time() - start_time
-                trace_output += str(total_time) + ', ' + str(optvc_len)
+                trace_output += str(total_time) + ', ' + str(optvc_len) + '\n'
                 #trace_output.append((optvc_len,time.time()-start_time))					
                 VC_sol = VC.copy()	
                 optvc_len = len(VC)
