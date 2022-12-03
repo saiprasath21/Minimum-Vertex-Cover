@@ -5,7 +5,7 @@ import networkx as nx
 import sys
 import heapq
 from Approx import Approx
-from ls1 import LS1_SA
+from LS1 import LS1_SA
 from ls2 import Hill
 from bnb import BNB
 
