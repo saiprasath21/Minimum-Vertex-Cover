@@ -1,3 +1,4 @@
+# Executable file that takes inputs from the user and calls the respective functions. 
 import os
 import time
 import argparse
