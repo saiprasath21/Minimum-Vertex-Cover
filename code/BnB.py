@@ -3,45 +3,43 @@ from time import time
 import networkx as nx
 import numpy as np
 
+#function to remove elements from optimal vc if they are not in the "considered" state
 def removeFalse(optimalVC : list):
     for ele in optimalVC:
         if not ele[1]:
             optimalVC.remove(ele)
     return optimalVC
 
+#branch and bound function
 def BNB(bnbGraph, timeLimit):
     timeLimit = int(timeLimit)
     startTime = time()
     timeTaken = 0 
     times = []
     currGraph:nx.Graph=bnbGraph.copy() #maintain a copy that can be modified / replaced...
-    #find node with maximum degree... use separate function..?
-    #####...max degree...####
+    #find node with maximum degree
     # print(dict(currGraph.degree()))
     list_of_degrees=sorted(dict(currGraph.degree()).items(), reverse=True, key=lambda item: item[1])
     max_node, maxDegree=list_of_degrees[0] #this is a tuple...(node, degree)
     optimalVC=np.array([])
     currVC=[]
     frontier=[]
-    # neighbours=[]
     upperBound=currGraph.number_of_nodes()
     print('Initial UpperBound:', upperBound)
-    #lower bound calc later..
-    frontier.append([max_node, False, -1, None]) #1st parent's val: -1, -1..? #0: False... 1: True...
+    frontier.append([max_node, False, -1, None]) #1st parent's val: -1, None
     frontier.append([max_node, True, -1, None])
-    #2 different possibilities added to frontier...
+    #2 different possibilities added to frontier ^^...
     while len(frontier)!=0 and timeTaken < timeLimit:
         poppedVertex, considered, parent_node, parent_node_considered=frontier.pop()
-        #backtrack flag..? instead just call backtracking func..?
         if considered:
             currGraph.remove_node(poppedVertex)
         else:
-            # popped_vertex_neighbours=curr_graph.neighbors(max_node)
+            # add neighbours of popped vertex to currVC then remove those vertices from graph
             for elem in list(currGraph.neighbors(poppedVertex)): #change made: list of neighs...
                 currVC.append([elem, True])
                 currGraph.remove_node(elem)
         currVC.append([poppedVertex, considered])
-        count=0
+        count=0 #count=considered vertices in currvc
         for elem in currVC:
             if elem[1]:
                 count+=1
@@ -52,7 +50,7 @@ def BNB(bnbGraph, timeLimit):
                 upperBound=count
                 print('Current Opt VC size', count)
                 times.append((time()-startTime, count))
-            #backtracking...
+            #backtracking code...
             if len(frontier)!=0:
                 if [frontier[-1][2], frontier[-1][3]] in currVC: #change made: tuple to list..
                     index=-1
