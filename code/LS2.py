@@ -1,3 +1,4 @@
+# This code implements the first-improvement hill climbing technique which is a local search algrorithm to find the MVC. 
 import time
 import random
 import networkx as nx
