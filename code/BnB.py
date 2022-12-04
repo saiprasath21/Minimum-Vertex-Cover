@@ -1,3 +1,4 @@
+# This code implements the Branch and Bound approach for finding the MVC. 
 from time import time
 import networkx as nx
 import numpy as np
